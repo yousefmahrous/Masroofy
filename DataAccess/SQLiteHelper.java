@@ -205,24 +205,18 @@ public class SQLiteHelper implements IDatabase {
         try (Connection conn = this.connect(); 
              Statement stmt = conn.createStatement()) {
 
-            // Disable foreign key constraints temporarily
             stmt.execute("PRAGMA foreign_keys = OFF");
 
-            // Delete all data from each table
             stmt.execute("DELETE FROM transactions");
             stmt.execute("DELETE FROM categories");
             stmt.execute("DELETE FROM budget_cycle");
             stmt.execute("DELETE FROM app_user");
 
-            // Reset auto-increment counters for each table
             stmt.execute("DELETE FROM sqlite_sequence WHERE name='transactions'");
             stmt.execute("DELETE FROM sqlite_sequence WHERE name='categories'");
             stmt.execute("DELETE FROM sqlite_sequence WHERE name='budget_cycle'");
 
-            // Re-enable foreign key constraints
             stmt.execute("PRAGMA foreign_keys = ON");
-
-            System.out.println("All application data cleared successfully.");
 
         } catch (SQLException e) {
             showError("Data Reset Error", "Failed to clear application data: " + e.getMessage());
